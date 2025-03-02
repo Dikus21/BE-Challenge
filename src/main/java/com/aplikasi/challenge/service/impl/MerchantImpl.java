@@ -55,7 +55,7 @@ public class MerchantImpl implements MerchantService {
             if (!request.getLocation().isEmpty()) {
                 checkDataDBMerchant.get().setLocation(request.getLocation());
             }
-            checkDataDBMerchant.get().setOpen(request.getOpen());
+            checkDataDBMerchant.get().setOpen(request.isOpen());
 
             log.info("Update Merchant Success");
             return response.success(merchantRepository.save(checkDataDBMerchant.get()));

@@ -48,7 +48,7 @@ public class OrderImpl implements OrderService {
             Optional<Order> checkDataDBOrder = orderRepository.findById(request.getId());
             if (!checkDataDBOrder.isPresent()) return response.error("Id is not registered");
             if (!request.getDestinationAddress().isEmpty()) checkDataDBOrder.get().setDestinationAddress(request.getDestinationAddress());
-            checkDataDBOrder.get().setCompleted(request.getCompleted());
+            checkDataDBOrder.get().setCompleted(request.isCompleted());
 
             log.info("Update Order Success");
             return response.success(orderRepository.save(checkDataDBOrder.get()));
