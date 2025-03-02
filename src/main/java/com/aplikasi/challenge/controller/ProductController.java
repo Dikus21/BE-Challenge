@@ -6,6 +6,8 @@ import com.aplikasi.challenge.repository.ProductRepository;
 import com.aplikasi.challenge.service.ProductService;
 import com.aplikasi.challenge.utils.SimpleStringUtils;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/v1/product")
+@Tag(name = "Product", description = "Product API")
 public class ProductController {
     @Autowired
     public ProductService productService;
@@ -30,27 +33,32 @@ public class ProductController {
     @Autowired
     public SimpleStringUtils simpleStringUtils;
 
-    @PostMapping(value = {"/save", "/save/"})
+    @PostMapping("/save")
+    @Operation(summary = "Save Product", description = "Save Product")
     public ResponseEntity<Map> save(@RequestBody Product request) {
         return new ResponseEntity<Map>(productService.save(request), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/update", "/update/"})
+    @PutMapping("/update")
+    @Operation(summary = "Update Product", description = "Update Product")
     public ResponseEntity<Map> update(@RequestBody Product request) {
         return new ResponseEntity<Map>(productService.update(request), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = {"/delete", "/delete/"})
+    @DeleteMapping("/delete")
+    @Operation(summary = "Delete Product", description = "Delete Product")
     public ResponseEntity<Map> delete(@RequestBody Product request) {
         return new ResponseEntity<>(productService.delete(request), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/{id}", "/{id}/"})
+    @GetMapping("/{id}")
+    @Operation(summary = "Get Product by ID", description = "Get Product by ID")
     public ResponseEntity<Map> getById(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(productService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/list", "/list/"})
+    @GetMapping("/list")
+    @Operation(summary = "List Product", description = "Pageable List Product")
     public ResponseEntity<Map> listQuizHeaderSpec(
             @RequestParam() Integer page,
             @RequestParam(required = true) Integer size,
