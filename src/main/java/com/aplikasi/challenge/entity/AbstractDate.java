@@ -1,6 +1,7 @@
 package com.aplikasi.challenge.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -21,16 +22,19 @@ public abstract class AbstractDate implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     @Column(name = "created_date", updatable = false)
+    @Schema(hidden = true)
     private Date createdDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "Asia/Jakarta")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "deleted_date")
+    @Schema(hidden = true)
     private Date deletedDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", timezone = "Asia/Jakarta")
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
     @Column(name = "upated_date")
+    @Schema(hidden = true)
     private Date updatedDate;
 }

@@ -36,7 +36,7 @@ public class MerchantImpl implements MerchantService {
             return map;
         }
         checkData.setName(merchant.getName());
-        checkData.setOpen(merchant.getOpen());
+        checkData.setOpen(merchant.isOpen());
         checkData.setLocation(merchant.getLocation());
         Merchant doUpdate = merchantRepository.save(checkData);
         map.put("data", doUpdate);

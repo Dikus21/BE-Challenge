@@ -1,6 +1,8 @@
 package com.aplikasi.challenge.service.impl;
 
+import com.aplikasi.challenge.entity.Merchant;
 import com.aplikasi.challenge.entity.Product;
+import com.aplikasi.challenge.repository.MerchantRepository;
 import com.aplikasi.challenge.repository.ProductRepository;
 import com.aplikasi.challenge.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,13 @@ public class ProductImpl implements ProductService {
     @Autowired
     public ProductRepository productRepository;
 
+    @Autowired
+    public MerchantRepository merchantRepository;
+
     @Override
     public Map<Object, Object> save(Product product) {
+        Merchant merchant = merchantRepository.findById(product.getMerchantId()).orElseThrow(() -> new RuntimeException("Merchant not found"));
+        product.setMerchant(merchant);
         Map<Object, Object> map = new HashMap<>();
         Product doSave = productRepository.save(product);
         map.put("data", doSave);

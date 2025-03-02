@@ -5,6 +5,8 @@ import com.aplikasi.challenge.entity.Product;
 import com.aplikasi.challenge.repository.OrderDetailRepository;
 import com.aplikasi.challenge.service.OrderDetailService;
 import com.aplikasi.challenge.utils.SimpleStringUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/v1/order_detail")
+@Tag(name = "Order Detail", description = "Order Detail API")
 public class OrderDetailController {
     @Autowired
     public OrderDetailService orderDetailService;
@@ -30,27 +33,32 @@ public class OrderDetailController {
     @Autowired
     public SimpleStringUtils simpleStringUtils;
 
-    @PostMapping(value = {"/save", "/save/"})
+    @PostMapping("/save")
+    @Operation(summary = "Save Order Detail", description = "Save Order Detail")
     public ResponseEntity<Map> save(@RequestBody OrderDetail request) {
         return new ResponseEntity<Map>(orderDetailService.save(request), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/update", "/update/"})
+    @PutMapping("/update")
+    @Operation(summary = "Update Order Detail", description = "Update Order Detail")
     public ResponseEntity<Map> update(@RequestBody OrderDetail request) {
         return new ResponseEntity<Map>(orderDetailService.update(request), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = {"/delete", "/delete/"})
+    @DeleteMapping("/delete")
+    @Operation(summary = "Delete Order Detail", description = "Delete Order Detail")
     public ResponseEntity<Map> delete(@RequestBody OrderDetail request) {
         return new ResponseEntity<>(orderDetailService.delete(request.getId()), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/{id}", "/{id}/"})
+    @GetMapping("/{id}")
+    @Operation(summary = "Get Order Detail by ID", description = "Get Order Detail by ID")
     public ResponseEntity<Map> getById(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(orderDetailService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/list", "/list/"})
+    @GetMapping("/list")
+    @Operation(summary = "List Order Detail", description = "Pageable List Order Detail")
     public ResponseEntity<Map> listQuizHeaderSpec(
             @RequestParam() Integer page,
             @RequestParam(required = true) Integer size,

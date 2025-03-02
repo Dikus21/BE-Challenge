@@ -11,6 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface MerchantRepository extends JpaRepository<Merchant, UUID>, JpaSpecificationExecutor<Merchant> {
-    @Query("select m from Merchant m WHERE m.id = :idMerchant")
-    public Merchant getById(@Param("idMerchant") UUID idMerchant);
+//    @Query("select m from Merchant m WHERE m.id = :idMerchant")
+//    public Merchant getById(@Param("idMerchant") UUID idMerchant);
 }

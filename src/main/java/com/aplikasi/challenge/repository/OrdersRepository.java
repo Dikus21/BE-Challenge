@@ -11,6 +11,6 @@ import java.util.UUID;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, UUID>, JpaSpecificationExecutor<Orders> {
-    @Query("select o from Orders o WHERE o.id = :idOrder")
-    public Orders getById(@Param("idOrder") UUID idOrder);
+//    @Query("select o from Orders o WHERE o.id = :idOrder")
+//    public Orders getById(@Param("idOrder") UUID idOrder);
 }

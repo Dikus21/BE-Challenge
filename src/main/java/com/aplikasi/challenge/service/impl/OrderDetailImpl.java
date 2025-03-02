@@ -1,7 +1,11 @@
 package com.aplikasi.challenge.service.impl;
 
 import com.aplikasi.challenge.entity.OrderDetail;
+import com.aplikasi.challenge.entity.Orders;
+import com.aplikasi.challenge.entity.Product;
 import com.aplikasi.challenge.repository.OrderDetailRepository;
+import com.aplikasi.challenge.repository.OrdersRepository;
+import com.aplikasi.challenge.repository.ProductRepository;
 import com.aplikasi.challenge.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,11 +17,24 @@ import java.util.UUID;
 
 @Service
 public class OrderDetailImpl implements OrderDetailService {
+    private final OrderDetailRepository orderDetailRepository;
+    private final OrdersRepository ordersRepository;
+
+    private final ProductRepository productRepository;
+
     @Autowired
-    public OrderDetailRepository orderDetailRepository;
+    public OrderDetailImpl(OrderDetailRepository orderDetailRepository, OrdersRepository ordersRepository, ProductRepository productRepository) {
+        this.orderDetailRepository = orderDetailRepository;
+        this.ordersRepository = ordersRepository;
+        this.productRepository = productRepository;
+    }
 
     @Override
     public Map<Object, Object> save(OrderDetail orderDetail) {
+        Orders order = ordersRepository.findById(orderDetail.getOrderId()).orElseThrow(() -> new RuntimeException("Order not found"));
+        Product product = productRepository.findById(orderDetail.getProductId()).orElseThrow(() -> new RuntimeException("Product not found"));
+        orderDetail.setOrder(order);
+        orderDetail.setProduct(product);
         Map<Object, Object> map = new HashMap<>();
         OrderDetail doSave = orderDetailRepository.save(orderDetail);
         map.put("data", doSave);

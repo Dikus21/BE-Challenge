@@ -16,8 +16,8 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, UUID>, JpaSpecificationExecutor<Users> {
-    @Query("select u from Users u WHERE u.id = :idUser")
-    public Users getById(@Param("idUser") UUID idUser);
+//    @Query("select u from Users u WHERE u.id = :idUser")
+//    public Users getById(@Param("idUser") UUID idUser);
 
     @Query(value = "select u from Users u WHERE LOWER(u.username) like LOWER(:nameParam)")
     public Page<Users> getLikeName(@Param("nameParam") String nameParam, Pageable pageable);

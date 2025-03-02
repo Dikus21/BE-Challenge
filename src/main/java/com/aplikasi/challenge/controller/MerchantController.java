@@ -4,6 +4,8 @@ import com.aplikasi.challenge.entity.Merchant;
 import com.aplikasi.challenge.repository.MerchantRepository;
 import com.aplikasi.challenge.service.MerchantService;
 import com.aplikasi.challenge.utils.SimpleStringUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/v1/merchant")
+@Tag(name = "Merchant", description = "Merchant API")
 public class MerchantController {
     @Autowired
     public MerchantService merchantService;
@@ -28,27 +31,32 @@ public class MerchantController {
     @Autowired
     public SimpleStringUtils simpleStringUtils;
 
-    @PostMapping(value = {"/save", "/save/"})
+    @PostMapping("/save")
+    @Operation(summary = "Save Merchant", description = "Save Merchant")
     public ResponseEntity<Map> save(@RequestBody Merchant request) {
         return new ResponseEntity<Map>(merchantService.save(request), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/update", "/update/"})
+    @PutMapping("/update")
+    @Operation(summary = "Update Merchant", description = "Update Merchant")
     public ResponseEntity<Map> update(@RequestBody Merchant request) {
         return new ResponseEntity<Map>(merchantService.update(request), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = {"/delete", "/delete/"})
+    @DeleteMapping("/delete")
+    @Operation(summary = "Delete Merchant", description = "Delete Merchant")
     public ResponseEntity<Map> delete(@RequestBody Merchant request) {
         return new ResponseEntity<>(merchantService.delete(request.getId()), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/{id}", "/{id}/"})
+    @GetMapping("/{id}")
+    @Operation(summary = "Get Merchant by ID", description = "Get Merchant by ID")
     public ResponseEntity<Map> getById(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(merchantService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/list", "/list/"})
+    @GetMapping("/list")
+    @Operation(summary = "List Merchant", description = "Pageable List Merchant")
     public ResponseEntity<Map> listQuizHeaderSpec(
             @RequestParam() Integer page,
             @RequestParam(required = true) Integer size,

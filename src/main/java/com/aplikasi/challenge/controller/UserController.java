@@ -3,7 +3,10 @@ package com.aplikasi.challenge.controller;
 import com.aplikasi.challenge.entity.Users;
 import com.aplikasi.challenge.repository.UserRepository;
 import com.aplikasi.challenge.service.UserService;
+import com.aplikasi.challenge.utils.ResponseTemplate;
 import com.aplikasi.challenge.utils.SimpleStringUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +21,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/v1/user")
+@Tag(name = "User", description = "User API")
 public class UserController {
     @Autowired
     public UserService userService;
@@ -28,35 +32,40 @@ public class UserController {
     @Autowired
     public SimpleStringUtils simpleStringUtils;
 
-    @PostMapping(value = {"/save", "/save/"})
-    public ResponseEntity<Map> save(@RequestBody Users request) {
-        return new ResponseEntity<Map>(userService.save(request), HttpStatus.OK);
+    @PostMapping("/save")
+    @Operation(summary = "Save User", description = "Save User")
+    public ResponseEntity<ResponseTemplate<Users>> save(@RequestBody Users request) {
+        return new ResponseEntity<>(userService.save(request), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/update", "/update/"})
-    public ResponseEntity<Map> update(@RequestBody Users request) {
-        return new ResponseEntity<Map>(userService.update(request), HttpStatus.OK);
+    @PutMapping("/update")
+    @Operation(summary = "Update User", description = "Update User")
+    public ResponseEntity<ResponseTemplate<Users>> update(@RequestBody Users request) {
+        return new ResponseEntity<>(userService.update(request), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = {"/delete", "/delete/"})
-    public ResponseEntity<Map> delete(@RequestBody Users request) {
+    @DeleteMapping("/delete")
+    @Operation(summary = "Delete User", description = "Delete User")
+    public ResponseEntity<ResponseTemplate<Users>> delete(@RequestBody Users request) {
         return new ResponseEntity<>(userService.delete(request.getId()), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/{id}", "/{id}/"})
-    public ResponseEntity<Map> getById(@PathVariable("id")UUID id) {
+    @GetMapping("/{id}")
+    @Operation(summary = "Get User by ID", description = "Get User by ID")
+    public ResponseEntity<ResponseTemplate<Users>> getById(@PathVariable("id")UUID id) {
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/list", "/list/"})
-    public ResponseEntity<Map> listQuizHeaderSpec(
+    @GetMapping("/list")
+    @Operation(summary = "List User", description = "Pageable List User")
+    public ResponseEntity<ResponseTemplate<Page<Users>>> listQuizHeaderSpec(
             @RequestParam() Integer page,
             @RequestParam(required = true) Integer size,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) String emailAddress,
             @RequestParam(required = false) String orderby,
             @RequestParam(required = false) String ordertype) {
-        Pageable showData = simpleStringUtils.getShort(orderby, ordertype, page, size);
+        Pageable pageable = simpleStringUtils.getShort(orderby, ordertype, page, size);
 
         Specification<Users> spec =
                 ((root, query, criteriaBuilder) -> {
@@ -70,10 +79,10 @@ public class UserController {
                     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                 });
 
-        Page<Users> list = userRepository.findAll(spec, showData);
+        // Fetch paginated users from the database
+        Page<Users> usersPage = userRepository.findAll(spec, pageable);
 
-        Map map = new HashMap();
-        map.put("data",list);
-        return new ResponseEntity<Map>(map, new HttpHeaders(), HttpStatus.OK);
+
+        return ResponseEntity.ok(new ResponseTemplate<>(200, "Users retrieved successfully", usersPage));
     }
 }

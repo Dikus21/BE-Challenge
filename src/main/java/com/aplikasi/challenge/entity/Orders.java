@@ -1,5 +1,6 @@
 package com.aplikasi.challenge.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
@@ -23,20 +24,23 @@ public class Orders extends AbstractDate implements Serializable {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
+    @Schema(hidden = true)
     private UUID id;
 
     @Column(name = "destination_address")
+    @Schema(description = "Destination address of the order", example = "Jl. Raya Bogor")
     private String destinationAddress;
 
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "user_id_constraint"))
+    @Schema(hidden = true)
     private Users user;
 
-    @NotNull(message = "This field cannot be null!")
-    private boolean completed = false;
+    @Transient
+    @Schema(description = "User ID", example = "123e4567-e89b-12d3-a456-426614174000")
+    private UUID userId;
 
-    public boolean getCompleted(){
-        return this.completed;
-    }
+    @Schema(description = "Status of the order", example = "true")
+    private boolean completed = false;
 
 }

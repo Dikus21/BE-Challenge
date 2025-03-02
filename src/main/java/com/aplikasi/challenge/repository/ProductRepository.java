@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, UUID>, JpaSpecificationExecutor<Product> {
-    @Query("select p from Product p WHERE p.id = :idProduct")
-    public Product getById(@Param("idProduct") UUID idProduct);
+//    @Query("select p from Product p WHERE p.id = :idProduct")
+//    public Product getById(@Param("idProduct") UUID idProduct);
 }

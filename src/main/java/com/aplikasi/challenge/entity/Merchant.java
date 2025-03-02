@@ -1,5 +1,6 @@
 package com.aplikasi.challenge.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
@@ -20,18 +21,19 @@ public class Merchant extends AbstractDate implements Serializable {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
+    @Column(name = "id")
+    @Schema(hidden = true)
     private UUID id;
 
     @Column(name = "merchant_name", length = 150)
+    @Schema(description = "Name of the merchant", example = "merchant123")
     private String name;
 
     @NotNull(message = "This field cannot be null!")
     @Column(name = "merchant_location")
+    @Schema(description = "Location of the merchant", example = "Jl. Raya Bogor")
     private String location;
 
+    @Schema(description = "Open status of the merchant", example = "true")
     private boolean open;
-
-    public boolean getOpen(){
-        return this.open;
-    }
 }

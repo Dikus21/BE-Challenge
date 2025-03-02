@@ -3,6 +3,7 @@ package com.aplikasi.challenge.service.impl;
 import com.aplikasi.challenge.entity.Users;
 import com.aplikasi.challenge.repository.UserRepository;
 import com.aplikasi.challenge.service.UserService;
+import com.aplikasi.challenge.utils.ResponseTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,60 +14,47 @@ import java.util.UUID;
 
 @Service
 public class UserImpl implements UserService {
-    @Autowired
-    public UserRepository userRepository;
 
-    @Override
-    public Map<Object, Object> save(Users user) {
-        Map<Object, Object> map = new HashMap<>();
-        Users doSave = userRepository.save(user);
-        map.put("data", doSave);
-        map.put("message", "success");
-        map.put("code", 200);
-        return map;
+    private final UserRepository userRepository;
+
+    @Autowired
+    public UserImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
-    public Map<Object, Object> update(Users user) {
-        Map<Object, Object> map = new HashMap<>();
-        Users checkData = userRepository.getById(user.getId());
+    public ResponseTemplate<Users> save(Users user) {
+        return new ResponseTemplate<>(200, "success", userRepository.save(user));
+    }
+
+    @Override
+    public ResponseTemplate<Users> update(Users user) {
+        Users checkData = userRepository.findById(user.getId()).orElse(null);
         if(checkData == null) {
-            map.put("message", "data not found");
-            return map;
+            return new ResponseTemplate<>(404, "Data not found", null);
         }
-//        userRepository.updateData(user);
-//        Users displayUser = userRepository.getById(user.getId());
         checkData.setPassword(user.getPassword());
         checkData.setEmailAddress(user.getEmailAddress());
         checkData.setUsername(user.getUsername());
-        Users doUpdate = userRepository.save(checkData);
-        map.put("data", doUpdate);
-        return map;
+        return new ResponseTemplate<>(200, "success", userRepository.save(checkData));
     }
 
     @Override
-    public Map<Object, Object> delete(UUID uuid) {
-        Map<Object, Object> map = new HashMap<>();
-        Users checkData = userRepository.getById(uuid);
+    public ResponseTemplate<Users> delete(UUID uuid) {
+        Users checkData = userRepository.findById(uuid).orElse(null);
         if(checkData == null) {
-            map.put("message", "data not found");
-            return map;
+            return new ResponseTemplate<>(404, "Data not found", null);
         }
         checkData.setDeletedDate(new Date());
-        Users doDelete = userRepository.save(checkData);
-        map.put("data", doDelete);
-        return map;
+        return new ResponseTemplate<>(200, "success", userRepository.save(checkData));
     }
 
     @Override
-    public Map<Object, Object> getById(UUID uuid) {
-        Map<Object, Object> map = new HashMap<>();
-        Users findUser = userRepository.getById(uuid);
+    public ResponseTemplate<Users> getById(UUID uuid) {
+        Users findUser = userRepository.findById(uuid).orElse(null);
         if(findUser == null) {
-            map.put("message", "data not found");
-            return map;
+            return new ResponseTemplate<>(404, "Data not found", null);
         }
-        map.put("data", findUser);
-        return map;
+        return new ResponseTemplate<>(200, "success", findUser);
     }
 }

@@ -1,7 +1,9 @@
 package com.aplikasi.challenge.service.impl;
 
 import com.aplikasi.challenge.entity.Orders;
+import com.aplikasi.challenge.entity.Users;
 import com.aplikasi.challenge.repository.OrdersRepository;
+import com.aplikasi.challenge.repository.UserRepository;
 import com.aplikasi.challenge.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,13 @@ public class OrdersImpl implements OrdersService {
     @Autowired
     public OrdersRepository ordersRepository;
 
+    @Autowired
+    public UserRepository userRepository;
+
     @Override
     public Map<Object, Object> save(Orders orders) {
+        Users user = userRepository.findById(orders.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        orders.setUser(user);
         Map<Object, Object> map = new HashMap<>();
         Orders doSave = ordersRepository.save(orders);
         map.put("data", doSave);
@@ -34,7 +41,7 @@ public class OrdersImpl implements OrdersService {
             map.put("message", "data not found");
             return map;
         }
-        checkData.setCompleted(orders.getCompleted());
+        checkData.setCompleted(orders.isCompleted());
         checkData.setDestinationAddress(orders.getDestinationAddress());
         Orders doUpdate = ordersRepository.save(checkData);
         map.put("data", doUpdate);
