@@ -24,49 +24,12 @@ Implementing a database to store the restaurant's menu and orders, ensuring data
 # Challenge_5
 SYNRGY Challenge Chapter 5
 
-In this chapter, the application was enhanced by implementing **Jasper Reports and Swagger documentation** to improve usability, reporting, and API documentation. Additionally, **merchant, product, user, and order management functionalities** were introduced, allowing seamless interaction with the system.
+# **SYNRGY Challenge Chapter 5**
 
----
+This chapter enhances the application by introducing a **Jasper Reports and Swagger documentation**, improving API communication, reporting, and documentation accessibility. Jasper Reports allows users to generate **order summaries and sales reports**, while Swagger documentation provides an interactive API interface for better usability and testing.
 
-## 🚀 Features Implemented
+New features were added to manage **merchants**, including the ability to **create, update merchant status (Open/Closed), and display only open merchants**. The **product management system** now supports adding, updating, deleting, and listing available products, making menu management more flexible.
 
-### ✅ **1. REST Client**
-- Integrated a **REST client** to enable smooth communication between services.
-- Allows efficient **data retrieval** and interaction with external APIs.
+In **user management**, CRUD operations were implemented, allowing users to be created, updated, or removed from the system. Additionally, **order management** was enhanced with the ability to **create and track orders**, ensuring a seamless ordering experience. These updates improve the application's overall functionality, maintainability, and scalability. 🚀  
 
-### ✅ **2. Jasper Reports (PDF Generation)**
-- Implemented **Jasper Reports** to generate detailed reports.
-- Users can now generate **order summaries, sales reports, and other business analytics**.
 
-### ✅ **3. Swagger API Documentation**
-- Added **Swagger (OpenAPI)** to provide interactive API documentation.
-- Makes it easier to **test API endpoints** directly from the documentation.
-
----
-
-## 🏪 **Merchant Management**
-- ➕ **Add a new merchant**
-- 🔄 **Update merchant status (Open/Closed)**
-- 📌 **Display only open merchants** to users
-
----
-
-## 🍽 **Product Management**
-- ➕ **Add new products**
-- ✏ **Update product details**
-- 🗑 **Delete products**
-- 🏷 **Display only available products** in the menu
-
----
-
-## 👤 **User Management**
-- ➕ **Add new users**
-- ✏ **Update user information**
-- 🗑 **Delete users**
-
----
-
-## 📦 **Order Management**
-- 🛒 **Create new orders**
-- 📜 **View order history**
-- 🔄 **Update order details if necessary**
