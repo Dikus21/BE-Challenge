@@ -3,7 +3,7 @@ package com.aplikasi.challenge.service.oauth;
 import com.aplikasi.challenge.entity.oauth.Client;
 import com.aplikasi.challenge.entity.oauth.Role;
 import com.aplikasi.challenge.entity.oauth.RolePath;
-import com.aplikasi.challenge.entity.oauth.User;
+import com.aplikasi.challenge.entity.User;
 import com.aplikasi.challenge.repository.oauth.ClientRepository;
 import com.aplikasi.challenge.repository.oauth.RolePathRepository;
 import com.aplikasi.challenge.repository.oauth.RoleRepository;

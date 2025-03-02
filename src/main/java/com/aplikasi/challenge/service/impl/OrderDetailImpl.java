@@ -89,11 +89,11 @@ public class OrderDetailImpl implements OrderDetailService {
     }
 
     @Override
-    public Map<Object, Object> getById(UUID uuid) {
+    public Map<Object, Object> getById(Long id) {
         try {
             log.info("Get Order");
-            if (uuid == null) return templateResponse.error("Id is required");
-            Optional<OrderDetail> checkDataDBOrderDetail = orderDetailRepository.findById(uuid);
+            if (id == null) return templateResponse.error("Id is required");
+            Optional<OrderDetail> checkDataDBOrderDetail = orderDetailRepository.findById(id);
             if (!checkDataDBOrderDetail.isPresent()) return templateResponse.error("Order not Found");
 
             log.info("Order Found");

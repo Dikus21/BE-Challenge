@@ -12,5 +12,5 @@ public interface ProductService {
 
     Map<Object, Object> delete(Product request);
 
-    Map<Object, Object> getById(UUID uuid);
+    Map<Object, Object> getById(Long id);
 }

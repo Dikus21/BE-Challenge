@@ -10,10 +10,8 @@ import java.util.Date;
 public class PeriodReportDTO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Jakarta")
     private Date startDate;
-
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Jakarta")
     private Date endDate;
-
     private String period;
     private BigDecimal income;
 }

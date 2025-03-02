@@ -55,7 +55,7 @@ public class MerchantImpl implements MerchantService {
             if (!request.getLocation().isEmpty()) {
                 checkDataDBMerchant.get().setLocation(request.getLocation());
             }
-            checkDataDBMerchant.get().setOpen(request.getOpen());
+            checkDataDBMerchant.get().setOpen(request.isOpen());
 
             log.info("Update Merchant Success");
             return templateResponse.success(merchantRepository.save(checkDataDBMerchant.get()));
@@ -83,11 +83,11 @@ public class MerchantImpl implements MerchantService {
     }
 
     @Override
-    public Map<Object, Object> getById(UUID uuid) {
+    public Map<Object, Object> getById(Long id) {
         try {
             log.info("Get Merchant");
-            if (uuid == null) return templateResponse.error("Id is required");
-            Optional<Merchant> checkDataDBMerchant = merchantRepository.findById(uuid);
+            if (id == null) return templateResponse.error("Id is required");
+            Optional<Merchant> checkDataDBMerchant = merchantRepository.findById(id);
             if (!checkDataDBMerchant.isPresent()) return templateResponse.error("Merchant not Found");
 
             log.info("Merchant Found");

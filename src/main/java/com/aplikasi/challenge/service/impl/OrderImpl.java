@@ -1,7 +1,7 @@
 package com.aplikasi.challenge.service.impl;
 
 import com.aplikasi.challenge.entity.Order;
-import com.aplikasi.challenge.entity.oauth.User;
+import com.aplikasi.challenge.entity.User;
 import com.aplikasi.challenge.repository.OrderRepository;
 import com.aplikasi.challenge.repository.oauth.UserRepository;
 import com.aplikasi.challenge.service.OrderService;
@@ -51,7 +51,7 @@ public class OrderImpl implements OrderService {
             Optional<Order> checkDataDBOrder = orderRepository.findById(request.getId());
             if (!checkDataDBOrder.isPresent()) return templateResponse.error("Id is not registered");
             if (!request.getDestinationAddress().isEmpty()) checkDataDBOrder.get().setDestinationAddress(request.getDestinationAddress());
-            checkDataDBOrder.get().setCompleted(request.getCompleted());
+            checkDataDBOrder.get().setCompleted(request.isCompleted());
 
             log.info("Update Order Success");
             return templateResponse.success(orderRepository.save(checkDataDBOrder.get()));
@@ -79,11 +79,11 @@ public class OrderImpl implements OrderService {
     }
 
     @Override
-    public Map<Object, Object> getById(UUID uuid) {
+    public Map<Object, Object> getById(Long id) {
         try {
             log.info("Get Order");
-            if (uuid == null) return templateResponse.error("Id is required");
-            Optional<Order> checkDataDBOrder = orderRepository.findById(uuid);
+            if (id == null) return templateResponse.error("Id is required");
+            Optional<Order> checkDataDBOrder = orderRepository.findById(id);
             if (!checkDataDBOrder.isPresent()) return templateResponse.error("Order not Found");
 
             log.info("Order Found");

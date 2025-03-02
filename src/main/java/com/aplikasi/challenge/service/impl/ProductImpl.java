@@ -76,11 +76,11 @@ public class ProductImpl implements ProductService {
     }
 
     @Override
-    public Map<Object, Object> getById(UUID uuid) {
+    public Map<Object, Object> getById(Long id) {
         try {
             log.info("Get Product");
-            if (uuid == null) return templateResponse.error("Id is required");
-            Optional<Product> checkDataDBProduct = productRepository.findById(uuid);
+            if (id == null) return templateResponse.error("Id is required");
+            Optional<Product> checkDataDBProduct = productRepository.findById(id);
             if (!checkDataDBProduct.isPresent()) return templateResponse.error("Product not Found");
 
             log.info("Product Found");

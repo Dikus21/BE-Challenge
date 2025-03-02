@@ -16,6 +16,6 @@ public interface MerchantService {
 
     Map<Object, Object> delete(Merchant request);
 
-    Map<Object, Object> getById(UUID uuid);
+    Map<Object, Object> getById(Long id);
     Page<PeriodReportDTO> generateWeeklyReport(Merchant request, Date startDate, String period, Pageable pageable);
 }

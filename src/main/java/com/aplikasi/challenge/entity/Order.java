@@ -1,7 +1,7 @@
 package com.aplikasi.challenge.entity;
 
-import com.aplikasi.challenge.entity.oauth.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
@@ -20,28 +20,32 @@ import java.util.UUID;
 @Where(clause = "cancel_time is null")
 public class Order extends AbstractDate implements Serializable {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private UUID id;
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(
+//            name = "UUID",
+//            strategy = "org.hibernate.id.UUIDGenerator"
+//    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(hidden = true)
+    private Long id;
 
     @Column(name = "destination_address")
+    @Schema(description = "Destination address of the order", example = "Jl. Raya Bogor")
     private String destinationAddress;
 
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "user_id_constraint"))
     private User user;
 
-    //@NotNull(message = "This field cannot be null!")
-    private boolean completed = false;
+    @Transient
+    @Schema(description = "User ID", example = "3")
+    private Long userId;
 
     @JsonIgnore
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Schema(hidden = true)
     private List<OrderDetail> orderDetails;
-    public boolean getCompleted(){
-        return this.completed;
-    }
 
+    @Schema(hidden = true)
+    private boolean completed = false;
 }

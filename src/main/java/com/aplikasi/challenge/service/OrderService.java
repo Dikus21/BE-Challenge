@@ -12,7 +12,7 @@ public interface OrderService {
 
     Map<Object, Object> delete(Order request);
 
-    Map<Object, Object> getById(UUID uuid);
+    Map<Object, Object> getById(Long id);
 
     Map<Object, Object> getOrderDetailList(Order request);
 }

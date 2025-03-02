@@ -1,6 +1,6 @@
 package com.aplikasi.challenge.service.oauth;
 
-import com.aplikasi.challenge.entity.oauth.User;
+import com.aplikasi.challenge.entity.User;
 import com.aplikasi.challenge.repository.oauth.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;

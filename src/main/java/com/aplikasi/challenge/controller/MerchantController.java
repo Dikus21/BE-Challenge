@@ -1,5 +1,11 @@
 package com.aplikasi.challenge.controller;
 
+import com.aplikasi.challenge.entity.Merchant;
+import com.aplikasi.challenge.repository.MerchantRepository;
+import com.aplikasi.challenge.service.MerchantService;
+import com.aplikasi.challenge.utils.SimpleStringUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import com.aplikasi.challenge.dto.ReportDTO;
 import com.aplikasi.challenge.dto.PeriodReportDTO;
 import com.aplikasi.challenge.entity.Merchant;
@@ -24,6 +30,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/v1/merchant")
+@Tag(name = "Merchant", description = "Merchant API")
 public class MerchantController {
     @Autowired
     public MerchantService merchantService;
@@ -34,33 +41,37 @@ public class MerchantController {
     @Autowired
     public SimpleStringUtils simpleStringUtils;
 
-    @PostMapping(value = {"/save", "/save/"})
+    @PostMapping("/save")
+    @Operation(summary = "Save Merchant", description = "Save Merchant")
     public ResponseEntity<Map> save(@RequestBody Merchant request) {
         return new ResponseEntity<Map>(merchantService.save(request), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/update", "/update/"})
+    @PutMapping("/update")
+    @Operation(summary = "Update Merchant", description = "Update Merchant")
     public ResponseEntity<Map> update(@RequestBody Merchant request) {
         return new ResponseEntity<Map>(merchantService.update(request), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = {"/delete", "/delete/"})
+    @DeleteMapping("/delete")
+    @Operation(summary = "Delete Merchant", description = "Delete Merchant")
     public ResponseEntity<Map> delete(@RequestBody Merchant request) {
         return new ResponseEntity<>(merchantService.delete(request), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/{id}", "/{id}/"})
-    public ResponseEntity<Map> getById(@PathVariable("id") UUID id) {
+    @GetMapping("/{id}")
+    @Operation(summary = "Get Merchant by ID", description = "Get Merchant by ID")
+    public ResponseEntity<Map> getById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(merchantService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/list", "/list/"})
+    @GetMapping("/list")
+    @Operation(summary = "List Merchant", description = "Pageable List Merchant")
     public ResponseEntity<Map> listQuizHeaderSpec(
             @RequestParam() Integer page,
             @RequestParam(required = true) Integer size,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String location,
-            @RequestParam(required = false) boolean open,
             @RequestParam(required = false) String orderby,
             @RequestParam(required = false) String ordertype) {
         Pageable showData = simpleStringUtils.getShort(orderby, ordertype, page, size);
@@ -74,7 +85,7 @@ public class MerchantController {
                     if (location != null && !location.isEmpty()) {
                         predicates.add(criteriaBuilder.equal(root.get("location"), location));
                     }
-                    predicates.add(criteriaBuilder.equal(root.get("open"), open));
+//                    predicates.add(criteriaBuilder.equal(root.get("open"), open));
                     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                 });
 
@@ -85,11 +96,11 @@ public class MerchantController {
         return new ResponseEntity<Map>(map, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/income", "/income/"})
+    @GetMapping("/income")
     public ResponseEntity<Map> report(
             @RequestParam() Integer page,
             @RequestParam(required = true) Integer size,
-            @RequestParam(required = true) UUID uuid,
+            @RequestParam(required = true) Long uuid,
             @RequestParam(required = false)String sStartDate,
             @RequestParam(required = false, defaultValue = "Weekly")String period,
             @RequestParam(required = false) String orderby,
@@ -103,7 +114,7 @@ public class MerchantController {
         Page<PeriodReportDTO> periodReportDTOList = merchantService.generateWeeklyReport(merchant, startDate, period, showData);
         ReportDTO reportDTO = new ReportDTO();
         reportDTO.setPeriod(period);
-        reportDTO.setMerchantId(merchant.getId());
+        reportDTO.setMerchantId(String.valueOf(merchant.getId()));
         reportDTO.setMerchantLocation(merchant.getLocation());
         reportDTO.setReports(periodReportDTOList);
 

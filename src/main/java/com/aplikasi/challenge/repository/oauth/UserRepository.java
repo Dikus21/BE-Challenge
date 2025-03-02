@@ -1,6 +1,6 @@
 package com.aplikasi.challenge.repository.oauth;
 
-import com.aplikasi.challenge.entity.oauth.User;
+import com.aplikasi.challenge.entity.User;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

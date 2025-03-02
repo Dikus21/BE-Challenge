@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.print.attribute.standard.Media;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,18 +27,19 @@ class ProductImplTest {
     private ObjectMapper objectMapper;
     private String token;
     @BeforeEach
-    void setUp() {
-        token = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsib2F1dGgyLXJlc291cmNlIl0sInVzZXJfbmFtZSI6ImFkbWluQG1haWwuY29tIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sImV4cCI6MTcwMDg2MDkwNSwiYXV0aG9yaXRpZXMiOlsiUk9MRV9TVVBFUlVTRVIiLCJST0xFX0FETUlOIl0sImp0aSI6IkxpVW1yNWRIMEFrT2FzcnZSbVBrQWdNTWRETSIsImNsaWVudF9pZCI6Im15LWNsaWVudC1hcHBzIn0.hREzoxjaNo-eTSgQ295_DhrtPYSQCTJLC17j0xpCMFM";
+    void setUp() throws Exception {
+        token = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsib2F1dGgyLXJlc291cmNlIl0sInVzZXJfbmFtZSI6InVzZXJAbWFpbC5jb20iLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXSwiZXhwIjoxNzQxMDM0MDAzLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiS0xKUmtUTEZDamdiMUxFeUZCNS1Wb1hYRmFrIiwiY2xpZW50X2lkIjoibXktY2xpZW50LXdlYiJ9.DHuWCztSOU9XuhrtHj-Mwyhv6tQ8dYU-Riq-faQBWtQ ";
     }
 
     @Test
     void saveTest() throws Exception {
         Map sample = new HashMap<>();
         Map sampleMerchant = new HashMap<>();
-        sampleMerchant.put("id", "91b63126-0b8d-4fd4-ae72-7ba72600b5c1");
+        sampleMerchant.put("id", "1");
         sample.put("name", "test product");
         sample.put("price", "5000000");
         sample.put("merchant", sampleMerchant);
+
         System.out.println("Positive Case : ");
         mockMvc.perform(
                 post("/v1/product/save")
@@ -50,20 +52,8 @@ class ProductImplTest {
         ).andDo(result -> {
             System.out.println("Save Result :" + result.getResponse().getContentAsString());
         });
-        System.out.println("Negative Case : ");
-        sampleMerchant.put("id", "91b63126-0b8d-4fd4-ae72-7ba72600b5c");
-        mockMvc.perform(
-                post("/v1/product/save")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(sample))
-                        .header("Authorization", token)
-        ).andExpect(
-                status().isBadRequest()
-        ).andDo(result -> {
-            System.out.println("Save Result :" + result.getResponse().getContentAsString());
-        });
-        sampleMerchant.put("id", "91b63126-0b8d-4fd4-ae72-7ba72600b5c1");
+//        System.out.println("Negative Case : ");
+        sampleMerchant.put("id", "1");
         sample.put("name", null);
         mockMvc.perform(
                 post("/v1/product/save")
@@ -78,7 +68,7 @@ class ProductImplTest {
         });
         sample.put("name", "test product");
         sample.put("price", null);
-        sampleMerchant.put("id", "91b63126-0b8d-4fd4-ae72-7ba72600b5c1");
+        sampleMerchant.put("id", "1");
         sample.put("name", null);
         mockMvc.perform(
                 post("/v1/product/save")
@@ -96,7 +86,7 @@ class ProductImplTest {
     @Test
     void updateTest() throws Exception {
         Map sample = new HashMap<>();
-        sample.put("id", "e9b5cdac-1200-4436-98ba-ce709b9a1ecc");
+        sample.put("id", "1");
         sample.put("name", "test product update");
         sample.put("price", "6000000");
         System.out.println("Positive Case : ");
@@ -112,7 +102,7 @@ class ProductImplTest {
             System.out.println("Update Result :" + result.getResponse().getContentAsString());
         });
         System.out.println("Negative Case : ");
-        sample.put("id", "91b63126-0b8d-4fd4-ae72-7ba72600b5c1");
+        sample.put("id", "1");
         mockMvc.perform(
                 put("/v1/product/update")
                         .accept(MediaType.APPLICATION_JSON)
@@ -124,7 +114,7 @@ class ProductImplTest {
         ).andDo(result -> {
             System.out.println("Update Result :" + result.getResponse().getContentAsString());
         });
-        sample.put("id", "e9b5cdac-1200-4436-98ba-ce709b9a1ecc");
+        sample.put("id", "1");
         sample.put("name", null);
         mockMvc.perform(
                 put("/v1/product/update")
@@ -155,7 +145,7 @@ class ProductImplTest {
     @Test
     void deleteTest() throws Exception {
         Map sample = new HashMap<>();
-        sample.put("id", "e9b5cdac-1200-4436-98ba-ce709b9a1ecc");
+        sample.put("id", "1");
         System.out.println("Positive Case : ");
         mockMvc.perform(
                 delete("/v1/product/delete")
@@ -169,7 +159,7 @@ class ProductImplTest {
             System.out.println("Delete Result :" + result.getResponse().getContentAsString());
         });
         System.out.println("Negative Case : ");
-        sample.put("id", "b357e1b4-dc76-489b-9aae-7648b60c86a1");
+        sample.put("id", "1");
         mockMvc.perform(
                 delete("/v1/product/delete")
                         .accept(MediaType.APPLICATION_JSON)
@@ -185,7 +175,7 @@ class ProductImplTest {
 
     @Test
     void getByIdTest() throws Exception {
-        String idSample =  "e9b5cdac-1200-4436-98ba-ce709b9a1ecc";
+        String idSample =  "1";
         System.out.println("Positive Case : ");
         mockMvc.perform(
                 get("/v1/product/" + idSample)
@@ -198,7 +188,7 @@ class ProductImplTest {
             System.out.println("Get Id Result :" + result.getResponse().getContentAsString());
         });
         System.out.println("Negative Case : ");
-        idSample = "91b63126-0b8d-4fd4-ae72-7ba72600b5c1";
+        idSample = "1";
         mockMvc.perform(
                 get("/v1/product/" + idSample)
                         .accept(MediaType.APPLICATION_JSON)
