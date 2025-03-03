@@ -9,6 +9,7 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.Value;
 import com.google.api.client.util.store.DataStoreFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.oauth2.Oauth2;
@@ -60,6 +61,7 @@ public class OAuth2Sample {
     private static Oauth2 oauth2;
     private static GoogleClientSecrets clientSecrets;
 
+
     /** Authorizes the installed application to access user's protected data. */
     private static Credential authorize() throws Exception {
         // load client secrets
@@ -67,6 +69,8 @@ public class OAuth2Sample {
         details.setClientId(EnvConfig.get("GOOGLE_CLIENT_ID"));
         details.setClientSecret(EnvConfig.get("GOOGLE_CLIENT_SECRET"));
         clientSecrets = new GoogleClientSecrets().setInstalled(details);
+        System.out.println(EnvConfig.get("GOOGLE_CLIENT_ID"));
+        System.out.println(EnvConfig.get("GOOGLE_CLIENT_SECRET"));
         // set up authorization code flow
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport, JSON_FACTORY, clientSecrets, SCOPES).setDataStoreFactory(
