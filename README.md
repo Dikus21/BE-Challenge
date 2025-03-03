@@ -20,3 +20,16 @@ Implements features using Lambda expressions, Optional, and Stream API to ensure
 SYNRGY Challenge Chapter 4
 
 Implementing a database to store the restaurant's menu and orders, ensuring data persistence and scalability. This version also includes a RESTful API to interact with the database, enabling users to perform CRUD operations on the menu and orders. The API provides a seamless interface for users to access and manipulate the data, enhancing the application's functionality and usability. This version also includes integration testing to validate the API's functionality and ensure its reliability and robustness. Integration testing is crucial in verifying the API's interactions with the database and ensuring that it performs as expected, providing users with a dependable and efficient system.
+
+# Challenge_5
+SYNRGY Challenge Chapter 5
+
+# **SYNRGY Challenge Chapter 5**
+
+This chapter enhances the application by introducing a **Jasper Reports and Swagger documentation**, improving API communication, reporting, and documentation accessibility. Jasper Reports allows users to generate **order summaries and sales reports**, while Swagger documentation provides an interactive API interface for better usability and testing.
+
+New features were added to manage **merchants**, including the ability to **create, update merchant status (Open/Closed), and display only open merchants**. The **product management system** now supports adding, updating, deleting, and listing available products, making menu management more flexible.
+
+In **user management**, CRUD operations were implemented, allowing users to be created, updated, or removed from the system. Additionally, **order management** was enhanced with the ability to **create and track orders**, ensuring a seamless ordering experience. These updates improve the application's overall functionality, maintainability, and scalability. 🚀  
+
+

@@ -1,5 +1,6 @@
 package com.aplikasi.challenge.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -35,5 +37,8 @@ public class Users extends AbstractDate implements Serializable {
     @Schema(description = "Password of the user", example = "password123")
     private String password;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Order> orders;
 
 }

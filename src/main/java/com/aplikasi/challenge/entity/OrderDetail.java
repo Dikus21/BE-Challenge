@@ -26,7 +26,7 @@ public class OrderDetail extends AbstractDate implements Serializable {
     @ManyToOne
     @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "order_id_constraint"))
     @Schema(hidden = true)
-    private Orders order;
+    private Order order;
 
     @Transient
     @Schema(description = "Order ID", example = "123e4567-e89b-12d3-a456-426614174000")
@@ -41,9 +41,8 @@ public class OrderDetail extends AbstractDate implements Serializable {
     @Schema(description = "Product ID", example = "123e4567-e89b-12d3-a456-426614174000")
     private UUID productId;
 
-    @Column(precision = 3)
     @Schema(description = "Quantity of the product", example = "2")
-    private BigDecimal quantity;
+    private int quantity;
 
     @Column(name = "total_price", precision = 20, scale = 2)
     @Schema(description = "Total price of the product", example = "200")

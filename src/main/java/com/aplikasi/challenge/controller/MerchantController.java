@@ -6,6 +6,13 @@ import com.aplikasi.challenge.service.MerchantService;
 import com.aplikasi.challenge.utils.SimpleStringUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import com.aplikasi.challenge.dto.ReportDTO;
+import com.aplikasi.challenge.dto.PeriodReportDTO;
+import com.aplikasi.challenge.entity.Merchant;
+import com.aplikasi.challenge.repository.MerchantRepository;
+import com.aplikasi.challenge.service.MerchantService;
+import com.aplikasi.challenge.utils.SimpleStringUtils;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +22,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.Predicate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -46,7 +56,7 @@ public class MerchantController {
     @DeleteMapping("/delete")
     @Operation(summary = "Delete Merchant", description = "Delete Merchant")
     public ResponseEntity<Map> delete(@RequestBody Merchant request) {
-        return new ResponseEntity<>(merchantService.delete(request.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(merchantService.delete(request), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -85,5 +95,44 @@ public class MerchantController {
         Map map = new HashMap();
         map.put("data",list);
         return new ResponseEntity<Map>(map, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @GetMapping("/income")
+    public ResponseEntity<Map> report(
+            @RequestParam() Integer page,
+            @RequestParam(required = true) Integer size,
+            @RequestParam(required = true) UUID uuid,
+            @RequestParam(required = false)String sStartDate,
+            @RequestParam(required = false, defaultValue = "Weekly")String period,
+            @RequestParam(required = false) String orderby,
+            @RequestParam(required = false) String ordertype) throws ParseException {
+        Pageable showData = simpleStringUtils.getShort(orderby, ordertype, page, size);
+        Merchant merchant = merchantRepository.findById(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Merchant not found"));
+        Date startDate;
+        if (sStartDate == null) startDate = merchant.getCreatedDate();
+        else startDate = new SimpleDateFormat("yyyy-MM-dd").parse(sStartDate);
+        Page<PeriodReportDTO> periodReportDTOList = merchantService.generateWeeklyReport(merchant, startDate, period, showData);
+        ReportDTO reportDTO = new ReportDTO();
+        reportDTO.setPeriod(period);
+        reportDTO.setMerchantId(merchant.getId());
+        reportDTO.setMerchantLocation(merchant.getLocation());
+        reportDTO.setReports(periodReportDTOList);
+
+
+        Map map = new HashMap();
+        map.put("data",reportDTO);
+        return new ResponseEntity<Map>(map, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<Map> invalidFormatHandler(InvalidFormatException e) {
+        Map<Object, Object> map = new HashMap<>();
+        if (e.getTargetType().equals(UUID.class)) {
+            map.put("ERROR", "Invalid UUID format provided in JSON");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+        }
+        map.put("ERROR", "Invalid data format");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 }

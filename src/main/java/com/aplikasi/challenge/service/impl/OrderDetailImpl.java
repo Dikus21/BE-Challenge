@@ -1,88 +1,107 @@
 package com.aplikasi.challenge.service.impl;
 
 import com.aplikasi.challenge.entity.OrderDetail;
-import com.aplikasi.challenge.entity.Orders;
+import com.aplikasi.challenge.entity.Order;
 import com.aplikasi.challenge.entity.Product;
 import com.aplikasi.challenge.repository.OrderDetailRepository;
-import com.aplikasi.challenge.repository.OrdersRepository;
+import com.aplikasi.challenge.repository.OrderRepository;
 import com.aplikasi.challenge.repository.ProductRepository;
 import com.aplikasi.challenge.service.OrderDetailService;
+import com.aplikasi.challenge.utils.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class OrderDetailImpl implements OrderDetailService {
-    private final OrderDetailRepository orderDetailRepository;
-    private final OrdersRepository ordersRepository;
-
-    private final ProductRepository productRepository;
-
     @Autowired
-    public OrderDetailImpl(OrderDetailRepository orderDetailRepository, OrdersRepository ordersRepository, ProductRepository productRepository) {
-        this.orderDetailRepository = orderDetailRepository;
-        this.ordersRepository = ordersRepository;
-        this.productRepository = productRepository;
-    }
+    public OrderDetailRepository orderDetailRepository;
+    @Autowired
+    public Response response;
+    @Autowired
+    public OrderRepository orderRepository;
+    @Autowired
+    public ProductRepository productRepository;
 
     @Override
-    public Map<Object, Object> save(OrderDetail orderDetail) {
-        Orders order = ordersRepository.findById(orderDetail.getOrderId()).orElseThrow(() -> new RuntimeException("Order not found"));
-        Product product = productRepository.findById(orderDetail.getProductId()).orElseThrow(() -> new RuntimeException("Product not found"));
-        orderDetail.setOrder(order);
-        orderDetail.setProduct(product);
-        Map<Object, Object> map = new HashMap<>();
-        OrderDetail doSave = orderDetailRepository.save(orderDetail);
-        map.put("data", doSave);
-        map.put("message", "success");
-        map.put("code", 200);
-        return map;
-    }
+    public Map<Object, Object> save(OrderDetail request) {
+        try {
+            log.info("Save New Order Detail");
+            if (request.getOrder().getId() == null) return response.error("Order Id is Required");
+            Optional<Order> checkDataDBOrder = orderRepository.findById(request.getOrder().getId());
+            if (!checkDataDBOrder.isPresent()) return response.error("Order Not Found");
+            request.setOrder(checkDataDBOrder.get());
+            Optional<Product> checkDataDBProduct = productRepository.findById(request.getProduct().getId());
+            if (!checkDataDBProduct.isPresent()) return response.error("Product Not Found");
+            request.setProduct(checkDataDBProduct.get());
+            if (request.getQuantity() == 0) return response.error("Quantity is required");
+            request.setTotalPrice(request.getProduct().getPrice().multiply(BigDecimal.valueOf(request.getQuantity())));
 
-    @Override
-    public Map<Object, Object> update(OrderDetail orderDetail) {
-        Map<Object, Object> map = new HashMap<>();
-        OrderDetail checkData = orderDetailRepository.getById(orderDetail.getId());
-        if(checkData == null) {
-            map.put("message", "data not found");
-            return map;
+            log.info("Order Detail Save Success");
+            return response.success(orderDetailRepository.save(request));
+        } catch (Exception e) {
+            log.error("Save Order Detail Error: " + e.getMessage());
+            return response.error("Save Order Detail: " + e.getMessage());
         }
-        checkData.setProduct(orderDetail.getProduct());
-        checkData.setQuantity(orderDetail.getQuantity());
-        checkData.setTotalPrice(orderDetail.getTotalPrice());
-        OrderDetail doUpdate = orderDetailRepository.save(checkData);
-        map.put("data", doUpdate);
-        return map;
     }
 
     @Override
-    public Map<Object, Object> delete(UUID uuid) {
-        Map<Object, Object> map = new HashMap<>();
-        OrderDetail checkData = orderDetailRepository.getById(uuid);
-        if(checkData == null) {
-            map.put("message", "data not found");
-            return map;
+    public Map<Object, Object> update(OrderDetail request) {
+        try {
+            log.info("Update Order Detail");
+            if (request.getId() == null) return response.error("Id is required");
+            Optional<OrderDetail> checkDataDBOrderDetail = orderDetailRepository.findById(request.getId());
+            if (!checkDataDBOrderDetail.isPresent()) return response.error("Order Detail not Found");
+            if (request.getQuantity() == 0) delete(checkDataDBOrderDetail.get());
+            checkDataDBOrderDetail.get().setTotalPrice(request.getProduct().getPrice().multiply(BigDecimal.valueOf(request.getQuantity())));
+
+
+            log.info("Update Order Detail Success");
+            return response.success(orderDetailRepository.save(checkDataDBOrderDetail.get()));
+        } catch (Exception e) {
+            log.error("Update Order Detail Error: " + e.getMessage());
+            return response.error("Update Order Detail: " + e.getMessage());
         }
-        checkData.setDeletedDate(new Date());
-        OrderDetail doDelete = orderDetailRepository.save(checkData);
-        map.put("data", doDelete);
-        return map;
+    }
+
+    @Override
+    public Map<Object, Object> delete(OrderDetail request) {
+        try {
+            log.info("Delete Order Detail");
+            if (request.getId() == null) return response.error("Id is required");
+            Optional<OrderDetail> checkDataDBOrderDetail = orderDetailRepository.findById(request.getId());
+            if (!checkDataDBOrderDetail.isPresent()) return response.error("Order not Found");
+
+            log.info("Order Deleted");
+            checkDataDBOrderDetail.get().setDeletedDate(new Date());
+            return response.success(orderDetailRepository.save(checkDataDBOrderDetail.get()));
+        } catch (Exception e) {
+            log.error("Delete Order Error: " + e.getMessage());
+            return response.error("Delete Order : " + e.getMessage());
+        }
     }
 
     @Override
     public Map<Object, Object> getById(UUID uuid) {
-        Map<Object, Object> map = new HashMap<>();
-        OrderDetail findUser = orderDetailRepository.getById(uuid);
-        if(findUser == null) {
-            map.put("message", "data not found");
-            return map;
+        try {
+            log.info("Get Order");
+            if (uuid == null) return response.error("Id is required");
+            Optional<OrderDetail> checkDataDBOrderDetail = orderDetailRepository.findById(uuid);
+            if (!checkDataDBOrderDetail.isPresent()) return response.error("Order not Found");
+
+            log.info("Order Found");
+            return response.success(checkDataDBOrderDetail.get());
+        } catch (Exception e) {
+            log.error("Get Order Error: " + e.getMessage());
+            return response.error("Get Order: " + e.getMessage());
         }
-        map.put("data", findUser);
-        return map;
     }
 
 //    @Override

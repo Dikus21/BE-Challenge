@@ -1,17 +1,16 @@
 package com.aplikasi.challenge.service;
 
 import com.aplikasi.challenge.entity.Users;
-import com.aplikasi.challenge.utils.ResponseTemplate;
 
 import java.util.Map;
 import java.util.UUID;
 
 public interface UserService {
-    ResponseTemplate<Users> save(Users user);
+    Map<Object, Object> save(Users request);
 
-    ResponseTemplate<Users> update(Users user);
+    Map<Object, Object> update(Users request);
 
-    ResponseTemplate<Users> delete(UUID uuid);
+    Map<Object, Object> delete(Users request);
 
-    ResponseTemplate<Users> getById(UUID uuid);
+    Map<Object, Object> getById(UUID id);
 }

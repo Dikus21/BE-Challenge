@@ -5,6 +5,7 @@ import com.aplikasi.challenge.entity.Product;
 import com.aplikasi.challenge.repository.ProductRepository;
 import com.aplikasi.challenge.service.ProductService;
 import com.aplikasi.challenge.utils.SimpleStringUtils;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class ProductController {
     @DeleteMapping("/delete")
     @Operation(summary = "Delete Product", description = "Delete Product")
     public ResponseEntity<Map> delete(@RequestBody Product request) {
-        return new ResponseEntity<>(productService.delete(request.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(productService.delete(request), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -88,5 +89,16 @@ public class ProductController {
         Map map = new HashMap();
         map.put("data",list);
         return new ResponseEntity<Map>(map, new HttpHeaders(), HttpStatus.OK);
+    }
+
+    @ExceptionHandler(InvalidFormatException.class)
+    public ResponseEntity<Map> invalidFormatHandler(InvalidFormatException e) {
+        Map<Object, Object> map = new HashMap<>();
+        if (e.getTargetType().equals(UUID.class)) {
+            map.put("ERROR", "Invalid UUID format provided in JSON");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+        }
+        map.put("ERROR", "Invalid data format");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
     }
 }

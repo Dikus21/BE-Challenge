@@ -1,6 +1,7 @@
 package com.aplikasi.challenge.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -35,5 +37,9 @@ public class Merchant extends AbstractDate implements Serializable {
     private String location;
 
     @Schema(description = "Open status of the merchant", example = "true")
-    private boolean open;
+    private boolean open = true;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "merchant", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Product> products;
 }
