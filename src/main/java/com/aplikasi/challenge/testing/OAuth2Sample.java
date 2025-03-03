@@ -1,4 +1,5 @@
 package com.aplikasi.challenge.testing;
+import com.aplikasi.challenge.utils.EnvConfig;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -62,14 +63,10 @@ public class OAuth2Sample {
     /** Authorizes the installed application to access user's protected data. */
     private static Credential authorize() throws Exception {
         // load client secrets
-        clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
-                new InputStreamReader(Objects.requireNonNull(OAuth2Sample.class.getResourceAsStream("/client_secret.json"))));
-        if (clientSecrets.getDetails().getClientId().startsWith("Enter")
-                || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
-            System.out.println("Enter Client ID and Secret from https://code.google.com/apis/console/ "
-                    + "into oauth2-cmdline-sample/src/main/resources/client_secrets.json");
-            System.exit(1);
-        }
+        GoogleClientSecrets.Details details = new GoogleClientSecrets.Details();
+        details.setClientId(EnvConfig.get("GOOGLE_CLIENT_ID"));
+        details.setClientSecret(EnvConfig.get("GOOGLE_CLIENT_SECRET"));
+        clientSecrets = new GoogleClientSecrets().setInstalled(details);
         // set up authorization code flow
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport, JSON_FACTORY, clientSecrets, SCOPES).setDataStoreFactory(
