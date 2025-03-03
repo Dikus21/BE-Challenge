@@ -1,0 +1,10 @@
+CREATE OR REPLACE FUNCTION public.get_products_under_5mil()
+ RETURNS SETOF product
+ LANGUAGE plpgsql
+AS $function$
+BEGIN
+    RETURN QUERY
+    SELECT * FROM product WHERE price < 5000000;
+END;
+$function$
+;
