@@ -15,13 +15,14 @@ import java.util.UUID;
 @Where(clause = "deleted_date is null")
 public class OrderDetail extends AbstractDate implements Serializable {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(
+//            name = "UUID",
+//            strategy = "org.hibernate.id.UUIDGenerator"
+//    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(hidden = true)
-    private UUID id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "order_id_constraint"))
@@ -29,8 +30,8 @@ public class OrderDetail extends AbstractDate implements Serializable {
     private Order order;
 
     @Transient
-    @Schema(description = "Order ID", example = "123e4567-e89b-12d3-a456-426614174000")
-    private UUID orderId;
+    @Schema(description = "Order ID", example = "1")
+    private Long orderId;
 
     @ManyToOne
     @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "product_id_constraint"))
@@ -39,7 +40,7 @@ public class OrderDetail extends AbstractDate implements Serializable {
 
     @Transient
     @Schema(description = "Product ID", example = "123e4567-e89b-12d3-a456-426614174000")
-    private UUID productId;
+    private Long productId;
 
     @Schema(description = "Quantity of the product", example = "2")
     private int quantity;

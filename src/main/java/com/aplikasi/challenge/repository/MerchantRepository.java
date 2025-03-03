@@ -12,9 +12,9 @@ import java.util.Date;
 import java.util.UUID;
 
 @Repository
-public interface MerchantRepository extends JpaRepository<Merchant, UUID>, JpaSpecificationExecutor<Merchant> {
-    @Query("select m from Merchant m WHERE m.id = :idMerchant")
-    public Merchant getById(@Param("idMerchant") UUID idMerchant);
+public interface MerchantRepository extends JpaRepository<Merchant, Long>, JpaSpecificationExecutor<Merchant> {
+//    @Query("select m from Merchant m WHERE m.id = :idMerchant")
+//    public Merchant getById(@Param("idMerchant") Long idMerchant);
 
     @Query(value = "select count(m) from Merchant m WHERE m.name = :merchantName")
     public Long getByName(@Param("merchantName") String merchantName);
@@ -26,7 +26,7 @@ public interface MerchantRepository extends JpaRepository<Merchant, UUID>, JpaSp
             "JOIN merchant m ON p.merchant_id = m.id " +
             "WHERE m.id = :merchantId " +
             "AND o.order_time BETWEEN :startDate AND :endDate ", nativeQuery = true)
-    BigDecimal sumIncomeMerchant(@Param("merchantId") UUID merchantId,
+    BigDecimal sumIncomeMerchant(@Param("merchantId") Long merchantId,
                                  @Param("startDate") Date startDate,
                                  @Param("endDate") Date endDate);
 //    @Query(value = "SELECT SUM(od.total_price) " +

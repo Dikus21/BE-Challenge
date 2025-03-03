@@ -53,7 +53,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get Product by ID", description = "Get Product by ID")
-    public ResponseEntity<Map> getById(@PathVariable("id") UUID id) {
+    public ResponseEntity<Map> getById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(productService.getById(id), HttpStatus.OK);
     }
 

@@ -4,7 +4,7 @@ import com.aplikasi.challenge.dto.PeriodReportDTO;
 import com.aplikasi.challenge.entity.Merchant;
 import com.aplikasi.challenge.repository.MerchantRepository;
 import com.aplikasi.challenge.service.MerchantService;
-import com.aplikasi.challenge.utils.Response;
+import com.aplikasi.challenge.utils.TemplateResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,22 +22,22 @@ public class MerchantImpl implements MerchantService {
     @Autowired
     public MerchantRepository merchantRepository;
     @Autowired
-    public Response response;
+    public TemplateResponse templateResponse;
 
     @Override
     public Map<Object, Object> save(Merchant request) {
         try {
             log.info("Save New Merchant");
-            if (request.getName().isEmpty()) return response.error("Name is required");
-            if (merchantRepository.getByName(request.getName()) > 0) return response.error("Name Used");
+            if (request.getName().isEmpty()) return templateResponse.error("Name is required");
+            if (merchantRepository.getByName(request.getName()) > 0) return templateResponse.error("Name Used");
 
-            if (request.getLocation().isEmpty()) return response.error("Address is required");
+            if (request.getLocation().isEmpty()) return templateResponse.error("Address is required");
 
             log.info("Merchant Save Success");
-            return response.success(merchantRepository.save(request));
+            return templateResponse.success(merchantRepository.save(request));
         } catch (Exception e) {
             log.error("Save Merchant Error: " + e.getMessage());
-            return response.error("Merchant Merchant: " + e.getMessage());
+            return templateResponse.error("Merchant Merchant: " + e.getMessage());
         }
     }
 
@@ -45,11 +45,11 @@ public class MerchantImpl implements MerchantService {
     public Map<Object, Object> update(Merchant request) {
         try {
             log.info("Update Merchant");
-            if (request.getId() == null) return response.error("Id is required");
+            if (request.getId() == null) return templateResponse.error("Id is required");
             Optional<Merchant> checkDataDBMerchant = merchantRepository.findById(request.getId());
-            if (!checkDataDBMerchant.isPresent()) return response.error("Id is not Registered");
+            if (!checkDataDBMerchant.isPresent()) return templateResponse.error("Id is not Registered");
             if (!request.getName().isEmpty()) {
-                if (merchantRepository.getByName(request.getName()) > 0) return response.error("Merchantname Exist, try other name");
+                if (merchantRepository.getByName(request.getName()) > 0) return templateResponse.error("Merchantname Exist, try other name");
                 checkDataDBMerchant.get().setName(request.getName());
             }
             if (!request.getLocation().isEmpty()) {
@@ -58,10 +58,10 @@ public class MerchantImpl implements MerchantService {
             checkDataDBMerchant.get().setOpen(request.isOpen());
 
             log.info("Update Merchant Success");
-            return response.success(merchantRepository.save(checkDataDBMerchant.get()));
+            return templateResponse.success(merchantRepository.save(checkDataDBMerchant.get()));
         } catch (Exception e) {
             log.error("Update Merchant Error: " + e.getMessage());
-            return response.error("Update Merchant: " + e.getMessage());
+            return templateResponse.error("Update Merchant: " + e.getMessage());
         }
     }
 
@@ -69,32 +69,32 @@ public class MerchantImpl implements MerchantService {
     public Map<Object, Object> delete(Merchant request) {
         try {
             log.info("Delete Merchant");
-            if (request.getId() == null) return response.error("Id is required");
+            if (request.getId() == null) return templateResponse.error("Id is required");
             Optional<Merchant> checkDataDBMerchant = merchantRepository.findById(request.getId());
-            if (!checkDataDBMerchant.isPresent()) return response.error("Merchant not Found");
+            if (!checkDataDBMerchant.isPresent()) return templateResponse.error("Merchant not Found");
 
             log.info("Merchant Deleted");
             checkDataDBMerchant.get().setDeletedDate(new Date());
-            return response.success(merchantRepository.save(checkDataDBMerchant.get()));
+            return templateResponse.success(merchantRepository.save(checkDataDBMerchant.get()));
         } catch (Exception e) {
             log.error("Delete Merchant Error: " + e.getMessage());
-            return response.error("Delete Merchant : " + e.getMessage());
+            return templateResponse.error("Delete Merchant : " + e.getMessage());
         }
     }
 
     @Override
-    public Map<Object, Object> getById(UUID uuid) {
+    public Map<Object, Object> getById(Long id) {
         try {
             log.info("Get Merchant");
-            if (uuid == null) return response.error("Id is required");
-            Optional<Merchant> checkDataDBMerchant = merchantRepository.findById(uuid);
-            if (!checkDataDBMerchant.isPresent()) return response.error("Merchant not Found");
+            if (id == null) return templateResponse.error("Id is required");
+            Optional<Merchant> checkDataDBMerchant = merchantRepository.findById(id);
+            if (!checkDataDBMerchant.isPresent()) return templateResponse.error("Merchant not Found");
 
             log.info("Merchant Found");
-            return response.success(checkDataDBMerchant.get());
+            return templateResponse.success(checkDataDBMerchant.get());
         } catch (Exception e) {
             log.error("Get Merchant Error: " + e.getMessage());
-            return response.error("Get Merchant: " + e.getMessage());
+            return templateResponse.error("Get Merchant: " + e.getMessage());
         }
     }
 

@@ -12,7 +12,7 @@ public interface OrderDetailService {
 
     Map<Object, Object> delete(OrderDetail request);
 
-    Map<Object, Object> getById(UUID uuid);
+    Map<Object, Object> getById(Long id);
 
 //    BigDecimal totalPrice(OrderDetail request);
 }

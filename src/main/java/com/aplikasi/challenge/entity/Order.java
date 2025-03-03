@@ -20,13 +20,14 @@ import java.util.UUID;
 @Where(clause = "cancel_time is null")
 public class Order extends AbstractDate implements Serializable {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(
+//            name = "UUID",
+//            strategy = "org.hibernate.id.UUIDGenerator"
+//    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(hidden = true)
-    private UUID id;
+    private Long id;
 
     @Column(name = "destination_address")
     @Schema(description = "Destination address of the order", example = "Jl. Raya Bogor")
@@ -34,17 +35,17 @@ public class Order extends AbstractDate implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "user_id_constraint"))
-    @Schema(hidden = true)
-    private Users user;
+    private User user;
 
     @Transient
-    @Schema(description = "User ID", example = "123e4567-e89b-12d3-a456-426614174000")
-    private UUID userId;
+    @Schema(description = "User ID", example = "3")
+    private Long userId;
 
     @JsonIgnore
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Schema(hidden = true)
     private List<OrderDetail> orderDetails;
 
-    @Schema(description = "Status of the order", example = "true")
+    @Schema(hidden = true)
     private boolean completed = false;
 }

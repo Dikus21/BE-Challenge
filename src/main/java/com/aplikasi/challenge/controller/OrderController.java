@@ -6,6 +6,8 @@ import com.aplikasi.challenge.service.InvoiceService;
 import com.aplikasi.challenge.service.OrderService;
 import com.aplikasi.challenge.utils.SimpleStringUtils;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/v1/order")
+@Tag(name = "Order", description = "Order API")
 public class OrderController {
     @Autowired
     public OrderRepository orderRepository;
@@ -36,7 +39,8 @@ public class OrderController {
     @Autowired
     public SimpleStringUtils simpleStringUtils;
 
-    @PostMapping(value = {"/generateInvoice"})
+    @PostMapping("/generateInvoice")
+    @Operation(summary = "Generate Invoice", description = "Generate Invoice")
     public ResponseEntity<?> generateInvoice(@RequestBody Order request) {
         try {
             byte[] pdfData = invoiceService.generateInvoice(request);
@@ -52,39 +56,44 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
-    @PostMapping(value = {"/save", "/save/"})
+    @PostMapping("/save")
+    @Operation(summary = "Save Order", description = "Save Order")
     public ResponseEntity<Map> save(@RequestBody Order request) {
         return new ResponseEntity<Map>(orderService.save(request), HttpStatus.OK);
     }
 
-    @PutMapping(value = {"/update", "/update/"})
+    @PutMapping("/update")
+    @Operation(summary = "Update Order", description = "Update Order")
     public ResponseEntity<Map> update(@RequestBody Order request) {
         return new ResponseEntity<Map>(orderService.update(request), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = {"/delete", "/delete/"})
+    @DeleteMapping("/delete")
+    @Operation(summary = "Delete Order", description = "Delete Order")
     public ResponseEntity<Map> delete(@RequestBody Order request) {
         return new ResponseEntity<>(orderService.delete(request), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/{id}", "/{id}/"})
-    public ResponseEntity<Map> getById(@PathVariable("id") UUID id) {
+    @GetMapping("/{id}")
+    @Operation(summary = "Get Order by ID", description = "Get Order by ID")
+    public ResponseEntity<Map> getById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(orderService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/showOrderDetail", "/showOrderDetail/"})
+    @GetMapping("/showOrderDetail")
+    @Operation(summary = "Show Order Detail", description = "Show Order Detail")
     public ResponseEntity<Map> getOrderDetailList(@RequestBody Order request) {
         return new ResponseEntity<>(orderService.getOrderDetailList(request), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/list", "/list/"})
+    @GetMapping("/list")
+    @Operation(summary = "List Order", description = "Pageable List Order")
     public ResponseEntity<Map> listOrder(
             @RequestParam() Integer page,
             @RequestParam(required = true) Integer size,
             @RequestParam(required = false) String address,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) UUID user,
-            @RequestParam(required = false) boolean status,
             @RequestParam(required = false) String orderby,
             @RequestParam(required = false) String ordertype) {
         Pageable showData = simpleStringUtils.getShort(orderby, ordertype, page, size);
@@ -101,7 +110,7 @@ public class OrderController {
 //                    if (user != null) {
 //                        predicates.add(criteriaBuilder.equal(root.get("user.id"), user));
 //                    }
-                    predicates.add(criteriaBuilder.equal(root.get("completed"), status));
+//                    predicates.add(criteriaBuilder.equal(root.get("completed"), status));
                     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                 });
 

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class Response {
+public class TemplateResponse {
     public Map<Object, Object> success(Object data) {
         Map<Object, Object> map = new HashMap<>();
         map.put("data", data);
@@ -16,7 +16,7 @@ public class Response {
         return map;
     }
 
-    public Map<Object, Object> error(String message) {
+    public Map<Object, Object> error(Object message) {
         Map<Object, Object> map = new HashMap<>();
         map.put("error", message);
         map.put("code", 404);

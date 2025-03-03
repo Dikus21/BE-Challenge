@@ -24,12 +24,15 @@ Implementing a database to store the restaurant's menu and orders, ensuring data
 # Challenge_5
 SYNRGY Challenge Chapter 5
 
-# **SYNRGY Challenge Chapter 5**
-
 This chapter enhances the application by introducing a **Jasper Reports and Swagger documentation**, improving API communication, reporting, and documentation accessibility. Jasper Reports allows users to generate **order summaries and sales reports**, while Swagger documentation provides an interactive API interface for better usability and testing.
 
 New features were added to manage **merchants**, including the ability to **create, update merchant status (Open/Closed), and display only open merchants**. The **product management system** now supports adding, updating, deleting, and listing available products, making menu management more flexible.
 
 In **user management**, CRUD operations were implemented, allowing users to be created, updated, or removed from the system. Additionally, **order management** was enhanced with the ability to **create and track orders**, ensuring a seamless ordering experience. These updates improve the application's overall functionality, maintainability, and scalability. 🚀  
 
+# Challenge_6
+SYNRGY Challenge Chapter 6
 
+This chapter introduces **Spring Security** to the application, enhancing its security features and protecting sensitive data. Spring Security provides authentication and authorization mechanisms to ensure that only authorized users can access the application's resources. By implementing Spring Security, the application can securely manage user authentication, authorization, and session management, safeguarding user data and maintaining system integrity. A Log In & OAuth API was developed, enabling secure authentication through both traditional login credentials and OAuth-based authentication, improving security while maintaining user convenience. Additionally, Spring Security dependencies were integrated to enforce user roles and permissions, ensuring that sensitive endpoints remain protected from unauthorized access.
+
+The application was also successfully deployed to Railway.app, making it cloud-accessible for better scalability and availability. To ensure reliability, unit testing was implemented, validating authentication processes, role enforcement, and security configurations. These updates strengthen the application’s security, maintainability, and usability while meeting industry standards for secure web applications.

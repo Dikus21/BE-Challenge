@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, UUID>, JpaSpecificationExecutor<Order> {
-    @Query("select o from Order o WHERE o.id = :idOrder")
-    public Order getById(@Param("idOrder") UUID idOrder);
+public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
+//    @Query("select o from Order o WHERE o.id = :idOrder")
+//    public Order getById(@Param("idOrder") UUID idOrder);
 }

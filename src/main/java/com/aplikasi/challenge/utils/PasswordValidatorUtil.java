@@ -1,10 +1,12 @@
 package com.aplikasi.challenge.utils;
 
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
 
 @Getter
+@Component
 public class PasswordValidatorUtil {
     private static final Pattern LOWERCASE_PATTERN = Pattern.compile(".*[a-z].*");
     private static final Pattern UPPERCASE_PATTERN = Pattern.compile(".*[A-Z].*");

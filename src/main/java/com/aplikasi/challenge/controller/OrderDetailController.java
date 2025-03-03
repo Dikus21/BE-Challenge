@@ -54,7 +54,7 @@ public class OrderDetailController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get Order Detail by ID", description = "Get Order Detail by ID")
-    public ResponseEntity<Map> getById(@PathVariable("id") UUID id) {
+    public ResponseEntity<Map> getById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(orderDetailService.getById(id), HttpStatus.OK);
     }
 

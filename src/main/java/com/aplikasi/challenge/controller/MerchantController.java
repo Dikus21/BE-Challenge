@@ -61,7 +61,7 @@ public class MerchantController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get Merchant by ID", description = "Get Merchant by ID")
-    public ResponseEntity<Map> getById(@PathVariable("id") UUID id) {
+    public ResponseEntity<Map> getById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(merchantService.getById(id), HttpStatus.OK);
     }
 
@@ -72,7 +72,6 @@ public class MerchantController {
             @RequestParam(required = true) Integer size,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String location,
-            @RequestParam(required = false) boolean open,
             @RequestParam(required = false) String orderby,
             @RequestParam(required = false) String ordertype) {
         Pageable showData = simpleStringUtils.getShort(orderby, ordertype, page, size);
@@ -86,7 +85,7 @@ public class MerchantController {
                     if (location != null && !location.isEmpty()) {
                         predicates.add(criteriaBuilder.equal(root.get("location"), location));
                     }
-                    predicates.add(criteriaBuilder.equal(root.get("open"), open));
+//                    predicates.add(criteriaBuilder.equal(root.get("open"), open));
                     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                 });
 
@@ -101,7 +100,7 @@ public class MerchantController {
     public ResponseEntity<Map> report(
             @RequestParam() Integer page,
             @RequestParam(required = true) Integer size,
-            @RequestParam(required = true) UUID uuid,
+            @RequestParam(required = true) Long uuid,
             @RequestParam(required = false)String sStartDate,
             @RequestParam(required = false, defaultValue = "Weekly")String period,
             @RequestParam(required = false) String orderby,
@@ -115,7 +114,7 @@ public class MerchantController {
         Page<PeriodReportDTO> periodReportDTOList = merchantService.generateWeeklyReport(merchant, startDate, period, showData);
         ReportDTO reportDTO = new ReportDTO();
         reportDTO.setPeriod(period);
-        reportDTO.setMerchantId(merchant.getId());
+        reportDTO.setMerchantId(String.valueOf(merchant.getId()));
         reportDTO.setMerchantLocation(merchant.getLocation());
         reportDTO.setReports(periodReportDTOList);
 

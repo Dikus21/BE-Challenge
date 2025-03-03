@@ -17,13 +17,14 @@ import java.util.UUID;
 @Where(clause = "deleted_date is null")
 public class Product extends AbstractDate implements Serializable {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(
+//            name = "UUID",
+//            strategy = "org.hibernate.id.UUIDGenerator"
+//    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(hidden = true)
-    private UUID id;
+    private Long id;
 
     @Column(name = "product_name", length = 100)
     @Schema(description = "Name of the product", example = "product123")
@@ -38,12 +39,11 @@ public class Product extends AbstractDate implements Serializable {
     @Schema(hidden = true)
     private Merchant merchant;
 
+    @Transient
+    @Schema(description = "Merchant ID", example = "1")
+    private Long merchantId;
+
     @JsonIgnore
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails;
-
-
-    @Transient
-    @Schema(description = "Merchant ID", example = "123e4567-e89b-12d3-a456-426614174000")
-    private UUID merchantId;
 }

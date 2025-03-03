@@ -48,8 +48,8 @@ public class InvoiceImpl implements InvoiceService {
         JasperReport jasperReport = JasperCompileManager.compileReport(reportPath);
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("USERNAME", order.getUser().getUsername());
-        parameters.put("EMAIL", order.getUser().getEmailAddress());
+        parameters.put("USERNAME", order.getUser().getFullname());
+        parameters.put("EMAIL", order.getUser().getUsername());
         parameters.put("ORDER_ID", String.valueOf(order.getId()));
         parameters.put("DESTINATION_ADDRESS", order.getDestinationAddress());
         parameters.put("CREATED_DATE", new Date());

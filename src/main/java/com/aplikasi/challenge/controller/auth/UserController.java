@@ -1,10 +1,11 @@
-package com.aplikasi.challenge.controller;
+package com.aplikasi.challenge.controller.auth;
 
-import com.aplikasi.challenge.entity.Users;
-import com.aplikasi.challenge.repository.UserRepository;
+import com.aplikasi.challenge.entity.User;
+import com.aplikasi.challenge.repository.oauth.UserRepository;
 import com.aplikasi.challenge.service.UserService;
 import com.aplikasi.challenge.utils.SimpleStringUtils;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.Predicate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/user")
+@Tag(name = "User", description = "User API")
 public class UserController {
     @Autowired
     public UserService userService;
@@ -29,27 +34,26 @@ public class UserController {
     @Autowired
     public SimpleStringUtils simpleStringUtils;
 
-    @PostMapping(value = {"/save", "/save/"})
-    public ResponseEntity<Map> save(@RequestBody Users request) {
-        return new ResponseEntity<Map>(userService.save(request), HttpStatus.OK);
-    }
-
-    @PutMapping(value = {"/update", "/update/"})
-    public ResponseEntity<Map> update(@RequestBody Users request) {
+    @PutMapping("/update")
+    @Operation(summary = "Update User", description = "Update User")
+    public ResponseEntity<Map> update(@RequestBody User request) {
         return new ResponseEntity<Map>(userService.update(request), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = {"/delete", "/delete/"})
-    public ResponseEntity<Map> delete(@RequestBody Users request) {
+    @DeleteMapping("/delete")
+    @Operation(summary = "Delete User", description = "Delete User")
+    public ResponseEntity<Map> delete(@RequestBody User request) {
         return new ResponseEntity<>(userService.delete(request), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/{id}", "/{id}/"})
-    public ResponseEntity<Map> getById(@PathVariable("id")UUID id) {
+    @GetMapping("/{id}")
+    @Operation(summary = "Get User by ID", description = "Get User by ID")
+    public ResponseEntity<Map> getById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = {"/list", "/list/"})
+    @GetMapping("/list")
+    @Operation(summary = "List User", description = "List User")
     public ResponseEntity<Map> listQuizHeaderSpec(
             @RequestParam() Integer page,
             @RequestParam(required = true) Integer size,
@@ -59,7 +63,7 @@ public class UserController {
             @RequestParam(required = false) String ordertype) {
         Pageable showData = simpleStringUtils.getShort(orderby, ordertype, page, size);
 
-        Specification<Users> spec =
+        Specification<User> spec =
                 ((root, query, criteriaBuilder) -> {
                     List<Predicate> predicates = new ArrayList<>();
                     if (username != null && !username.isEmpty()) {
@@ -71,21 +75,11 @@ public class UserController {
                     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                 });
 
-        Page<Users> list = userRepository.findAll(spec, showData);
+        Page<User> list = userRepository.findAll(spec, showData);
 
         Map map = new HashMap();
         map.put("data",list);
         return new ResponseEntity<Map>(map, new HttpHeaders(), HttpStatus.OK);
     }
 
-    @ExceptionHandler(InvalidFormatException.class)
-    public ResponseEntity<Map> invalidFormatHandler(InvalidFormatException e) {
-        Map<Object, Object> map = new HashMap<>();
-        if (e.getTargetType().equals(UUID.class)) {
-            map.put("ERROR", "Invalid UUID format provided in JSON");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
-        }
-        map.put("ERROR", "Invalid data format");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
-    }
 }
