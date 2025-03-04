@@ -132,7 +132,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map registerManual (RegisterDTO objModel) {
-        Map map = new HashMap();
         try {
             String[] roleNames = {"ROLE_USER, ROLE_USER_O, ROLE_USER_OD"}; // admin
             User user = new User();
@@ -161,7 +160,6 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public Map registerMerchant (User request) {
-        Map map = new HashMap();
         try {
             Optional<User> checkDataDBUser = userRepository.findById(request.getId());
             String[] roleNames = {"ROLE_MERCHANT", "ROLE_MERCHANT_P"}; // admin
@@ -181,7 +179,6 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public Map registerByGoogle(RegisterDTO objModel) {
-        Map map = new HashMap();
         try {
             String[] roleNames = {"ROLE_USER, ROLE_USER_O, ROLE_USER_OD"};
             User user = new User();

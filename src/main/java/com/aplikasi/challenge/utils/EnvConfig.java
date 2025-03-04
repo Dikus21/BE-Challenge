@@ -1,5 +1,6 @@
 package com.aplikasi.challenge.utils;
 
+
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class EnvConfig {
