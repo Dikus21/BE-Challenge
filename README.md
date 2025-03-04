@@ -1,38 +1,86 @@
-# Challenge_1
-SYNRGY Challenge Chapter 1
+Restaurant Menu & Ordering System
 
-Creating a simple app for restaurant menus using the terminal to take in user input to choose their food and drinks.
-This app also prints user orders in the terminal and can print their receipt to a .txt file.
-Users can also change their order in case of incorrect choice or excess order.
+This project is a **restaurant menu and ordering system** that evolves over six development phases, integrating core software engineering concepts, database management, security, and API development.
 
-# Challenge_2
-SYNRGY Challenge Chapter 2
+## 🚀 Features
+- **📜 Menu Management**: View, add, update, and delete menu items.
+- **🛒 Order Processing**: Customers can place and modify orders, with receipt generation.
+- **🔑 Secure Authentication**: JWT-based authentication & OAuth2 for secure login.
+- **🛠️ Role-Based Access**: Customers, Merchants, and Admins with different permissions.
+- **📊 Reports & Analytics**: Jasper Reports for order summaries and sales tracking.
+- **☁️ Cloud Deployment**: Hosted on **Railway.app**, supporting **Docker** for scalability.
 
-Implementing OOP, MVC, Exception handling, and version control to the program, making a well-structured program, and 
-aids in organizing the application into distinct sections for easier development and testing programs.
+---
 
-# Challenge_3
-SYNRGY Challenge Chapter 3
+## 🏗️ Tech Stack
+### **Backend**
+- **Java 8** (Core Language)
+- **Spring Boot 2** (Framework)
+- **Spring Data JPA** (Database Access)
+- **Spring Security & OAuth2** (Authentication & Authorization)
 
-Implements features using Lambda expressions, Optional, and Stream API to ensure concise, readable, and efficient code. This transformation enhances readability and optimizes the program's performance, ensuring seamless execution and functionality. This version introduced unit testing to validate the program's reliability and robustness. This strategic addition is instrumental in verifying each part of the software by isolating it and proving its correctness, efficiency, and reliability, assuring the quality and dependability of the application. I also provided ERD with a comprehensive DDL. This meticulously crafted DDL serves as the foundational structure of the database.
+### **Database & Persistence**
+- **PostgreSQL** (Primary Database)
+- **Hibernate (JPA)** (ORM for database interaction)
 
-# Challenge_4
-SYNRGY Challenge Chapter 4
+### **API Documentation & Testing**
+- **Swagger (Springdoc OpenAPI)** (API Documentation)
+- **JUnit & Mockito** (Unit & Integration Testing)
+- **Postman** (Manual API Testing)
 
-Implementing a database to store the restaurant's menu and orders, ensuring data persistence and scalability. This version also includes a RESTful API to interact with the database, enabling users to perform CRUD operations on the menu and orders. The API provides a seamless interface for users to access and manipulate the data, enhancing the application's functionality and usability. This version also includes integration testing to validate the API's functionality and ensure its reliability and robustness. Integration testing is crucial in verifying the API's interactions with the database and ensuring that it performs as expected, providing users with a dependable and efficient system.
+### **Reporting & Deployment**
+- **Jasper Reports** (PDF Report Generation for Orders & Sales)
+- **Railway.app** (Cloud Deployment)
+- **Docker** (Containerization for scalability)
 
-# Challenge_5
-SYNRGY Challenge Chapter 5
+---
 
-This chapter enhances the application by introducing a **Jasper Reports and Swagger documentation**, improving API communication, reporting, and documentation accessibility. Jasper Reports allows users to generate **order summaries and sales reports**, while Swagger documentation provides an interactive API interface for better usability and testing.
+## 📚 API Documentation
 
-New features were added to manage **merchants**, including the ability to **create, update merchant status (Open/Closed), and display only open merchants**. The **product management system** now supports adding, updating, deleting, and listing available products, making menu management more flexible.
+The API documentation is available at [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html) after starting the server.
 
-In **user management**, CRUD operations were implemented, allowing users to be created, updated, or removed from the system. Additionally, **order management** was enhanced with the ability to **create and track orders**, ensuring a seamless ordering experience. These updates improve the application's overall functionality, maintainability, and scalability. 🚀  
+---
 
-# Challenge_6
-SYNRGY Challenge Chapter 6
+## 🛠️ How to Run the Project Locally
 
-This chapter introduces **Spring Security** to the application, enhancing its security features and protecting sensitive data. Spring Security provides authentication and authorization mechanisms to ensure that only authorized users can access the application's resources. By implementing Spring Security, the application can securely manage user authentication, authorization, and session management, safeguarding user data and maintaining system integrity. A Log In & OAuth API was developed, enabling secure authentication through both traditional login credentials and OAuth-based authentication, improving security while maintaining user convenience. Additionally, Spring Security dependencies were integrated to enforce user roles and permissions, ensuring that sensitive endpoints remain protected from unauthorized access.
+Follow these steps to get the project up and running locally.
 
-The application was also successfully deployed to Railway.app, making it cloud-accessible for better scalability and availability. To ensure reliability, unit testing was implemented, validating authentication processes, role enforcement, and security configurations. These updates strengthen the application’s security, maintainability, and usability while meeting industry standards for secure web applications.
+### Prerequisites
+
+Make sure you have the following installed on your machine:
+
+- Java JDK 8
+- Maven
+- PostgreSQL
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/WeFly-Team/Backend-Java.git
+cd Backend-Java
+```
+
+2. Set up the PostgreSQL database and configure the application properties.
+
+3. Install dependencies and build the project
+```bash
+mvn clean install
+```
+
+### Start the server
+
+```bash
+mvn spring-boot:run
+```
+## ERD
+
+![ERD](./SQL/ERD.png)
+
+## Contact
+
+For any questions or inquiries, please contact me at [andikatirta001@gmail.com](mailto:andikatirta001@gmail.com)
+
+
+### This `README.md` format includes your tech stack, repository link, API documentation link, and all the necessary details to get started with the project. Adjust the deployment URL and other placeholders as needed.
