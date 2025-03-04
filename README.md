@@ -8,7 +8,7 @@ This project is a **restaurant menu and ordering system** that evolves over six 
 - **🔑 Secure Authentication**: JWT-based authentication & OAuth2 for secure login.
 - **🛠️ Role-Based Access**: Customers, Merchants, and Admins with different permissions.
 - **📊 Reports & Analytics**: Jasper Reports for order summaries and sales tracking.
-- **☁️ Cloud Deployment**: Hosted on **Railway.app**, supporting **Docker** for scalability.
+- **☁️ Cloud Deployment**: Hosted on **Railway.app**
 
 ---
 
