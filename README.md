@@ -58,8 +58,8 @@ Make sure you have the following installed on your machine:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Dikus21/ecommerce-platform-api.git
-cd ecommerce-platform-api
+git clone https://github.com/Dikus21/food-ordering-api.git
+cd food-ordering-api
 ```
 
 2. Set up the PostgreSQL database and configure the application properties.
