@@ -1,6 +1,6 @@
 # Food Ordering API
 
-This project is a **restaurant menu and ordering system** that evolves over six development phases, integrating core software engineering concepts, database management, security, and API development.
+This project is a **Food Ordering System** that evolves over six development phases, integrating core software engineering concepts, database management, security, and API development.
 
 ## 🚀 Features
 - **📜 Menu Management**: View, add, update, and delete menu items.
