@@ -1,4 +1,4 @@
-Restaurant Menu & Ordering System
+# Food Ordering API
 
 This project is a **restaurant menu and ordering system** that evolves over six development phases, integrating core software engineering concepts, database management, security, and API development.
 
